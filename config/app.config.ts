@@ -3,12 +3,12 @@ export const config = {
     port : process.env.SERVER_PORT,
 
     jwt: {
-        secret : 'secret'
+        secret : process.env.SECRET
     },
     db : {
-        host : 'localhost',
-        user : 'root',
-        password : 'admin',
-        database : 'andromeda'
+        host : process.env.HOST_DB,
+        user : process.env.USER_DB,
+        password : process.env.PASSWORD_DB,
+        database : process.env.DATABASE
     }
 }
