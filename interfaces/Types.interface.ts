@@ -1,3 +1,5 @@
-export interface IQueryResponse {
-   data : any | null
+export interface IDbResponse<T> {
+   data : T[] | null
+   error : boolean 
+   mensaje : string
 }
