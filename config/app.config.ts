@@ -9,6 +9,6 @@ export const config = {
         host : 'localhost',
         user : 'root',
         password : 'admin',
-        database : 'productos'
+        database : 'andromeda'
     }
 }
