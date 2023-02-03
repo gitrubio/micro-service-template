@@ -1,5 +1,5 @@
 import connection from "../database/connection.db";
-import { IDbResponse } from "../interfaces/Types.interface";
+import { IDbResponse } from "../interfaces/app.interface";
 
 async function query<T>(sql: string): Promise<IDbResponse<T>> {
   try {
