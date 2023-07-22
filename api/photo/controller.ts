@@ -1,12 +1,42 @@
 import { Request, Response } from "express";
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
+import fs from 'fs';
+
+ 
+const loadImage = (url : string)  : Promise<HTMLImageElement  | null>=> {
+    return new Promise((resolve, reject) => {
+     const img = new Image()
+      img.onload = () => resolve(img);
+      img.onerror = (error) => reject(null);
+      img.src = url;
+    });
+};
+const createWhiteImage = (width : number, height : number) => {
+    const canvas = document.createElement('canvas');
+    canvas.width = width;
+    canvas.height = height;
+    const context = canvas.getContext('2d');
+   if (context) {
+      context.fillStyle = 'white';
+      context.fillRect(0, 0, width, height);
+   }
+    return canvas;
+  }; 
+  const saveImage = (canvas : any, filename : any) => {
+    return new Promise((resolve, reject) => {
+      canvas.toBlob((blob : any) => {
+        saveAs(blob, filename);
+        resolve('');
+      }, 'image/jpeg', 1);
+    });
+  };
 
 async function convertAll(_req: Request, res: Response) {
   try {
    
-          const directorioImagenes = '//192.168.0.67/Logistica/Fotos';
-          const directorioSalida = 'C:/Users/SyD Colombia SA/Desktop/n';
+          const directorioImagenes = 'C:/Users/carlo/OneDrive/Escritorio/png';
+          const directorioSalida = 'C:/Users/carlo/OneDrive/Escritorio/jpg';
           const rutaArchivoExcel = 'C:/Users/carlo/OneDrive/Escritorio/Libro1.xlsx';
           const rangoCeldasIDs = 'A2:A6';
       
@@ -27,59 +57,31 @@ async function convertAll(_req: Request, res: Response) {
                 ids.push(id);
               }
             }
-      
+            
+            
             // Procesar las imágenes
             for (const id of ids) {
               const nombreArchivo = id.toString();
-              const archivo = `${directorioImagenes}${nombreArchivo}.png`;
-      
+              const archivo = `${directorioImagenes}/${nombreArchivo}.png`;
+              console.log('imagenes ids 1');
               // Verificar si el archivo existe y es una imagen PNG
-           /*    if (fs.existsSync(archivo) && archivo.toLowerCase().endsWith('.png')) {
+              if (fs.existsSync(archivo) && archivo.toLowerCase().endsWith('.png')) {
                 // Leer la imagen PNG
                 const imagen = await loadImage(archivo);
-      
+                console.log('imagenes ids 2');
                 // Crear una nueva imagen con fondo blanco
                 const imagenRedimensionada = createWhiteImage(300, 300);
                 const canvas = imagenRedimensionada.getContext('2d');
-                canvas.drawImage(imagen, 0, 0, 300, 300);
-      
+                if(imagen)  canvas?.drawImage(imagen , 0, 0, 300, 300);
+                console.log('imagenes ids 3');
                 // Guardar la imagen convertida en formato JPEG
-                const rutaSalida = `${directorioSalida}${nombreArchivo}.jpg`;
+                const rutaSalida = `${directorioSalida}/${nombreArchivo}.jpg`;
                 await saveImage(imagenRedimensionada, rutaSalida);
       
                 console.log(`Se ha convertido ${archivo} a JPEG y redimensionado.`);
-              } */
+              }
             }
-          
-/*       
-        const loadImage = (url) => {
-          return new Promise((resolve, reject) => {
-            const img = new Image();
-            img.onload = () => resolve(img);
-            img.onerror = (error) => reject(error);
-            img.src = url;
-          });
-        }; */
-/*       
-        const createWhiteImage = (width, height) => {
-          const canvas = document.createElement('canvas');
-          canvas.width = width;
-          canvas.height = height;
-          const context = canvas.getContext('2d');
-          context.fillStyle = 'white';
-          context.fillRect(0, 0, width, height);
-          return canvas;
-        }; */
-      
-/*         const saveImage = (canvas, filename) => {
-          return new Promise((resolve, reject) => {
-            canvas.toBlob((blob) => {
-              saveAs(blob, filename);
-              resolve();
-            }, 'image/jpeg', 1);
-          });
-        };
-   */
+   
     res.status(200).json({});
   } catch (error) {
     console.log('error : ',error);
