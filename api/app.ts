@@ -1,6 +1,6 @@
 import express from 'express'
 import { config } from '../config/app.config'
-import userRoutes from './components/user/user.route'
+import photoRoutes from './photo/routes'
 import morgan from 'morgan'
 
 const app = express()
@@ -9,7 +9,8 @@ app.use(express.json())
 app.use(express.urlencoded({ extended : true}))
 app.use(morgan('dev'))
 //*******/
-app.use('/api/user',userRoutes)
+/* app.use('/api/user',userRoutes) */
+app.use('/api/excel',photoRoutes)
 app.listen(config.port,()=>{
     console.log(`servidor corriendo en puerto [ ${config.port} ]`)
 })

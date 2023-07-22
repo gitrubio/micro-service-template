@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import Pool from "../../../hooks/Pool.hook";
+import Pool from "../../hooks/Pool.hook";
 
 async function getAll(_req: Request, res: Response) {
   try {
